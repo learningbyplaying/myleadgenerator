@@ -2,6 +2,7 @@
 export PYTHONIOENCODING=utf8
 export PYTHONHASHSEED=0
 
-PROJECT_PATH=$1
+CUSTOMER=$1
+ENTITY=$2
 
-python3 /app/run.py "$PROJECT_PATH"
+python3 /app/run.py "$CUSTOMER" "$ENTITY"
