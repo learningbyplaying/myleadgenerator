@@ -11,9 +11,6 @@ services:
       - ./app:/app
       - ./projects:/projects
       - ./data:/data
-      - /mnt/c/Users/34692/Downloads/Animes:/anime
-      - /mnt/c/Users/34692/Downloads/Music:/music
-      - /mnt/c/Users/34692/Downloads/Series:/serie
     ports:
       - 8008:8000
       - 8501:8501
