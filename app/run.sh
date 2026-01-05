@@ -1,3 +1,8 @@
+#
+#
+# ./run.sh muelles_com amisando provincias
+#
+
 #set -o allexport; source /app/.credentials; set +o allexport
 export PYTHONIOENCODING=utf8
 export PYTHONHASHSEED=0
