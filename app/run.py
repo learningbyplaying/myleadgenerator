@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import argparse
 import sys
 import importlib
+from pathlib import Path
 
 if __name__ == "__main__":
 
@@ -10,16 +11,22 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = 'Example with non-optional arguments')
     
     parser.add_argument('customer', action = "store")
+    parser.add_argument('base', action = "store")
     parser.add_argument('entity', action = "store")
 
     customer = parser.parse_args().customer
+    base = parser.parse_args().base
     entity = parser.parse_args().entity
 
 
-    print(customer, entity)
+    print(customer, base, entity)
+
+    # ✅ Carpeta de salida
+    out_dir = Path("/data") / customer / base
+    out_dir.mkdir(parents=True, exist_ok=True)
 
 
-    module_path = f"customers.{customer}.{entity}"
+    module_path = f"customers.{customer}.{base}.{entity}"
 
     try:
         module = importlib.import_module(module_path)
@@ -32,4 +39,5 @@ if __name__ == "__main__":
         sys.exit(1)
 
     print(f"▶ Ejecutando {module_path}.run()")
-    module.run()
+    print(f"▶ Ejecutando {module_path}.run(out_dir=...)")
+    module.run(out_dir=str(out_dir), customer=customer, base=base, entity=entity)
