@@ -1,7 +1,8 @@
 #
 #
 # ./run.sh muelles_com amisando provincias
-#
+# ./run.sh muelles_com amisando empresas
+# ./run.sh muelles_com amisando website
 
 #set -o allexport; source /app/.credentials; set +o allexport
 export PYTHONIOENCODING=utf8
