@@ -1,0 +1,1 @@
+print("Todo excusas para no hacer dinero!")
