@@ -128,3 +128,25 @@ Muchos de estos:
 - Son proyectos SEO muertos
 
 👉 Ideal para scraping + contacto directo.
+
+
+6️⃣ site:.es "servicios" "ciudad"
+
+Ejemplo:
+```
+site:.es "servicios" "sevilla"
+```
+
+Google:
+
+- Limita resultados al dominio .es
+- Busca coincidencia semántica fuerte
+- Saca páginas locales optimizadas
+
+Qué filtras
+
+- Webs españolas
+- SEO local agresivo
+- Contenido repetitivo por ciudad
+
+👉 Exactamente el patrón de la web que has pasado.
