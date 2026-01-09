@@ -1,0 +1,86 @@
+
+1️⃣ inurl:servicios
+Qué le estás pidiendo REALMENTE a Google
+
+Cuando buscas:
+```
+inurl:servicios "control de"
+```
+
+Google hace esto internamente:
+
+- Escanea el índice
+- Filtra páginas que tienen la palabra servicios en la URL
+- Luego filtra por texto visible (“control de”)
+
+Por qué funciona
+
+Los directorios necesitan carpetas para escalar:
+
+/servicios/plagas/
+/servicios/fontaneria/
+/servicios/reformas/
+
+
+Una empresa normal no necesita eso.
+Un directorio sí.
+
+👉 inurl: = arquitectura, no contenido.
+
+
+2️⃣ inurl:/servicios/ + palabra clave
+
+Ejemplo:
+```
+inurl:/servicios/ cerrajeros
+```
+
+Aquí Google:
+
+- Busca URLs jerárquicas
+- Con carpetas profundas
+- Optimizadas para SEO local
+
+Ejemplo típico:
+
+/servicios/madrid/cerrajeros/
+/servicios/valencia/cerrajeros-urgentes/
+
+Qué estás cazando
+
+Webs que replican una plantilla
+
+Donde cada página es una ficha o listado
+
+Pensadas para indexar miles de combinaciones
+
+👉 Eso es directorio o pseudo-directorio, no web corporativa.
+
+
+3️⃣ inurl:empresa / inurl:empresas
+
+Ejemplo:
+```
+inurl:empresas fontaneros
+```
+
+Google:
+
+- Filtra URLs que contienen “empresa(s)”
+- Cruza con keyword
+
+Ejemplos reales:
+
+/empresas/fontaneria/
+/empresa/fontaneros-madrid/
+
+Por qué es oro
+
+Las palabras empresa / empresas son:
+
+- Lenguaje de clasificación
+- Lenguaje de listado
+- Lenguaje de base de datos
+
+Una empresa no se autodefine como “empresa de empresas”.
+Un directorio sí.
