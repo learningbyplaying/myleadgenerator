@@ -84,3 +84,47 @@ Las palabras empresa / empresas son:
 
 Una empresa no se autodefine como “empresa de empresas”.
 Un directorio sí.
+
+4️⃣ Frases tipo "encuentra la empresa"
+
+Ejemplo:
+```
+"encuentra la empresa" control plagas
+```
+
+Aquí Google:
+
+- Busca frases literales
+- En texto visible
+- Normalmente en H1, H2 o buscadores internos
+
+Qué indica esta frase
+
+- UX orientada a búsqueda
+- Usuario elige proveedor
+
+Web intermedia
+
+👉 Esto es 100% directorio o marketplace.
+
+5️⃣ "directorio de" + gremio
+
+Ejemplo:
+```
+"directorio de" electricistas
+```
+
+Aquí es obvio, pero Google:
+
+- Encuentra páginas que se autodefinen como directorio
+- Muchas veces mal monetizadas
+- Con datos públicos
+
+Lo interesante
+Muchos de estos:
+
+- No venden nada aún
+- Están abandonados
+- Son proyectos SEO muertos
+
+👉 Ideal para scraping + contacto directo.
