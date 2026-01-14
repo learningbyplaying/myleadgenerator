@@ -6,3 +6,19 @@ https://www.google.com/search?q=inurl:empresa+marketing+promocional&sca_esv=e144
 https://ongoing.es/
 https://www.laoficinademarketing.com/servicios/
 https://www.marketingdigitalcomoon.es/
+
+
+Opción A (directa y dura)
+
+No necesitas una web.
+Necesitas un sistema que te traiga clientes.
+
+Opción B (más B2B)
+
+Una web no te va a traer clientes.
+Un sistema de captación sí.
+
+Opción C (autoridad)
+
+Deja de pagar por webs.
+Empieza a construir sistemas de captación de clientes.
