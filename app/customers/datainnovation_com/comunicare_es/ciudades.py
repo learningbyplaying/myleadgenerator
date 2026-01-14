@@ -3,7 +3,7 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-URL = "https://www.comunicare.es/mejores-agencias-publicidad-espana/"
+DEFAULT_URL = "https://www.comunicare.es/mejores-agencias-publicidad-espana/"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -15,69 +15,68 @@ HEADERS = {
     "Connection": "keep-alive",
 }
 
-def extract_cities(html: str, base_url: str):
+PREFIX = "Agencias de publicidad en "
+
+def extract_city_links_from_content(html: str):
     soup = BeautifulSoup(html, "html.parser")
-
     rows = []
-    for a in soup.select('a.ez-toc-link[href^="#"]'):
-        title = (a.get("title") or a.get_text(" ", strip=True)).strip()
 
-        # solo queremos “Agencias de publicidad en X”
-        if not title.lower().startswith("agencias de publicidad en "):
+    # Buscamos h3 de Gutenberg (wp-block-heading) que contengan un <a>
+    for h3 in soup.select("h3.wp-block-heading"):
+        a = h3.find("a", href=True)
+        if not a:
             continue
 
-        anchor = a.get("href", "").lstrip("#").strip()
-        ciudad = title.split("Agencias de publicidad en", 1)[-1].strip()
-
-        if not anchor or not ciudad:
+        text = a.get_text(" ", strip=True)
+        if not text.startswith(PREFIX):
             continue
 
-        rows.append({
-            "ciudad": ciudad,
-            "anchor": anchor,
-            "url": f"{base_url}#{anchor}",
-        })
+        ciudad = text[len(PREFIX):].strip()
+        url = a["href"].strip()
 
-    # dedupe por anchor
+        if ciudad and url:
+            rows.append({
+                "ciudad": ciudad,
+                "url": url,
+            })
+
+    # dedupe por url
     seen = set()
     out = []
     for r in rows:
-        if r["anchor"] in seen:
+        if r["url"] in seen:
             continue
-        seen.add(r["anchor"])
+        seen.add(r["url"])
         out.append(r)
 
     return out
 
 def run(out_dir: str, **kwargs):
     """
-    Compatible con el runner:
-      module.run(out_dir=..., customer=..., base=..., entity=...)
+    Compatible con tu runner:
+      module.run(out_dir=..., customer=..., base=..., entity=..., ...)
+    Opcionales:
+      - url: sobreescribir DEFAULT_URL
+      - html_file: path a HTML guardado (si hay 403)
     """
+    url = kwargs.get("url") or DEFAULT_URL
+    html_file = kwargs.get("html_file")
 
-    # Puedes sobreescribir la URL desde CLI/runner si quieres:
-    # module.run(..., url="https://.../mejores-agencias-publicidad-espana/")
-    url = kwargs.get("url") or URL
-
-    out_path = Path(out_dir) / "ciudades.csv"
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-
-    # 1) Intento directo con requests
-    try:
+    if html_file:
+        html = Path(html_file).read_text(encoding="utf-8", errors="ignore")
+    else:
         r = requests.get(url, headers=HEADERS, timeout=30)
         r.raise_for_status()
         html = r.text
-    except Exception as e:
-        raise RuntimeError(
-            f"No pude descargar la página (posible 403). "
-            f"Prueba a pasar html_file='comunicare.html'. Error: {e}"
-        )
 
-    # 2) Parseo y guardo
-    cities = extract_cities(html, url)
+    cities = extract_city_links_from_content(html)
+
+    out_dir_path = Path(out_dir)
+    out_dir_path.mkdir(parents=True, exist_ok=True)
+    out_path = out_dir_path / "ciudades.csv"
 
     with out_path.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["ciudad", "anchor", "url"])
+        w = csv.DictWriter(f, fieldnames=["ciudad", "url"])
         w.writeheader()
         w.writerows(cities)
 
