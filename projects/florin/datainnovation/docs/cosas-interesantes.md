@@ -28,3 +28,5 @@ https://www.comunicare.es/mejores-empresas-marketing-online-y-digital-espana/
 
 ORO 
 google "directorio de tiendas online" -curso -blog
+
+http://www.seraportiendasonline.com/
