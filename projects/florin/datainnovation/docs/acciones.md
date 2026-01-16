@@ -10,3 +10,6 @@
 
 >> 2026-01-15 --
 Ver ecommerce como encontrarlos
+
+
+Los KPIS en Tableau

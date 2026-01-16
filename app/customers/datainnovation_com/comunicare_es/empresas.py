@@ -1,3 +1,4 @@
+# ./run.sh datainnovation_com comunicare_es empresas
 import csv
 import time
 from pathlib import Path

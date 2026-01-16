@@ -1,3 +1,5 @@
+# ./run.sh datainnovation_com comunicare_es websites
+
 import csv
 import os
 import re

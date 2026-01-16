@@ -1,11 +1,13 @@
-# ./run.sh datainnovation_com comunicare_es ciudades
+# ./run.sh datainnovation_com seraportiendasonline_com categorias
 
 import csv
 from pathlib import Path
+from urllib.parse import urljoin
+
 import requests
 from bs4 import BeautifulSoup
 
-DEFAULT_URL = "https://www.comunicare.es/mejores-agencias-publicidad-espana/"
+DEFAULT_URL = "http://www.seraportiendasonline.com/"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -17,32 +19,37 @@ HEADERS = {
     "Connection": "keep-alive",
 }
 
-PREFIX = "Agencias de publicidad en "
 
-def extract_city_links_from_content(html: str):
+def _is_real_http_url(href: str) -> bool:
+    if not href:
+        return False
+    href = href.strip().lower()
+    if href.startswith("javascript:"):
+        return False
+    return href.startswith("http://") or href.startswith("https://") or href.startswith("/")
+
+
+def extract_category_links(html: str, base_url: str) -> list[dict]:
     soup = BeautifulSoup(html, "html.parser")
     rows = []
 
-    # Buscamos h3 de Gutenberg (wp-block-heading) que contengan un <a>
-    for h3 in soup.select("h3.wp-block-heading"):
-        a = h3.find("a", href=True)
+    container = soup.select_one("div.categorySideHolder")
+    cat_blocks = container.select("div.catitemHolder") if container else soup.select("div.catitemHolder")
+
+    for block in cat_blocks:
+        a = block.select_one("h2 a[href]")
         if not a:
             continue
 
-        text = a.get_text(" ", strip=True)
-        if not text.startswith(PREFIX):
+        categoria = a.get_text(" ", strip=True)
+        href = (a.get("href") or "").strip()
+        if not categoria or not _is_real_http_url(href):
             continue
 
-        ciudad = text[len(PREFIX):].strip()
-        url = a["href"].strip()
+        url = urljoin(base_url, href)
+        rows.append({"categoria": categoria, "url": url})
 
-        if ciudad and url:
-            rows.append({
-                "ciudad": ciudad,
-                "url": url,
-            })
-
-    # dedupe por url
+    # dedupe por url (por si acaso)
     seen = set()
     out = []
     for r in rows:
@@ -53,33 +60,35 @@ def extract_city_links_from_content(html: str):
 
     return out
 
+
 def run(out_dir: str, **kwargs):
     """
-    Compatible con tu runner:
-      module.run(out_dir=..., customer=..., base=..., entity=..., ...)
+    Compatible con tu runner.
     Opcionales:
       - url: sobreescribir DEFAULT_URL
-      - html_file: path a HTML guardado (si hay 403)
+      - html_file: path a HTML guardado
     """
     url = kwargs.get("url") or DEFAULT_URL
     html_file = kwargs.get("html_file")
 
     if html_file:
         html = Path(html_file).read_text(encoding="utf-8", errors="ignore")
+        base_url = url
     else:
         r = requests.get(url, headers=HEADERS, timeout=30)
         r.raise_for_status()
         html = r.text
+        base_url = url
 
-    cities = extract_city_links_from_content(html)
+    cats = extract_category_links(html, base_url=base_url)
 
     out_dir_path = Path(out_dir)
     out_dir_path.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir_path / "ciudades.csv"
+    out_path = out_dir_path / "categorias.csv"
 
     with out_path.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["ciudad", "url"])
+        w = csv.DictWriter(f, fieldnames=["categoria", "url"])
         w.writeheader()
-        w.writerows(cities)
+        w.writerows(cats)
 
-    print(f"✅ Guardado {len(cities)} ciudades en {out_path}")
+    print(f"✅ Guardadas {len(cats)} categorías en {out_path}")
