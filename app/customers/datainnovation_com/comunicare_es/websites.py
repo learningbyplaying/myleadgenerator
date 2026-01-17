@@ -1,4 +1,4 @@
-# ./run.sh datainnovation_com comunicare_es websites
+# ./run.sh datainnovation_com comunicare_es empresas
 
 import csv
 import os
